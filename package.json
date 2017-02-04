@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/miracle2/individual-eraser-pong#readme",
   "dependencies": {
-    "express": "^4.14.1"
+    "express": "^4.14.1",
+    "forever": "^0.15.3",
+    "forever-monitor": "^1.7.1"
   }
 }
