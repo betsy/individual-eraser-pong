@@ -3,8 +3,8 @@
     // your code goes here
 
 exports.consts = {
-	width: 1200,
-    height: 600,
+	width: 1260,
+    height: 660,
     friction: 0.8,
     gravity: 0.8,
     block_size: 60
@@ -19,7 +19,8 @@ exports.player = {
   velX: 0,
   velY: 0,
   jumping: false,
-  grounded: false
+  grounded: false,
+  health: 200
 };
 
 exports.make_boxes = function(){
@@ -74,6 +75,7 @@ exports.update = function(player, boxes, keys){
         	if (boxes[i][j] == 0 || boxes[i][j] == null) continue;
 	        var dir = colCheck(player, j*exports.consts.block_size, i*exports.consts.block_size);
 
+	        if(boxes[i][j] == 2) player.health--;
 	        if (dir === "l" || dir === "r") {
 	            player.velX = 0;
 	            player.jumping = false;
@@ -82,6 +84,9 @@ exports.update = function(player, boxes, keys){
 	            player.jumping = false;
 	        } else if (dir === "t") {
 	            player.velY *= -1;
+	        }
+	        else if (boxes[i][j] == 2){
+	        	player.health++;
 	        }
     	}
     }
