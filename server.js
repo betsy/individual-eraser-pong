@@ -16,14 +16,14 @@ var width = 600,
       y : height/2,
       width : 50,
       height : 50,
-      speed: 10,
+      speed: 13,
       velX: 0,
       velY: 0,
       jumping: false
     },
     keys = [],
     friction = 0.8,
-    gravity = 1.8;
+    gravity = 2.0;
 
 
 // Loading socket.io
@@ -51,8 +51,10 @@ io.sockets.on('connection', function (socket, username) {
     console.log("asdf");
     setInterval(function(){
 		update();
+	},20);
+	setInterval(function(){
 		socket.emit('p1',p1);
-	},60);
+	},40);
 });
 
 
