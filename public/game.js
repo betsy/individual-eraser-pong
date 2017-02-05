@@ -30,7 +30,7 @@ exports.make_boxes = function(){
 	  boxes[i] = new Array(21).fill(0);
 	}
 	boxes[boxes.length-1] = new Array(21).fill(1);
-	console.log(boxes);
+	// console.log(boxes);
 	return boxes;
 };
 

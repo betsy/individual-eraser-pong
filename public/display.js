@@ -43,17 +43,19 @@ function draw(){
   for (var i = 0; i < boxes.length; i++) {
     for (var j = 0; j < boxes[i].length; j++) {
         if(boxes[i][j] == 1){
-          ctx.fill();
-          ctx.fillStyle = "black";
-          ctx.fillRect(j*game.consts.block_size, i*game.consts.block_size, game.consts.block_size, game.consts.block_size);
+          // ctx.fill();
+          // ctx.fillStyle = "black";
+          // ctx.fillRect(j*game.consts.block_size, i*game.consts.block_size, game.consts.block_size, game.consts.block_size);
+          animate(j*game.consts.block_size, i*game.consts.block_size, 1);
         }
         else if (boxes[i][j] == 2){
-          animate(j*game.consts.block_size, i*game.consts.block_size);
+          animate(j*game.consts.block_size, i*game.consts.block_size, 2);
         }
         else if (boxes[i][j] == 3){
+          // animate(j*game.consts.block_size, i*game.consts.block_size, 3);
           ctx.fill();
           ctx.fillStyle = "green";
-          ctx.fillRect(j*game.consts.block_size, i*game.consts.block_size, game.consts.block_size, game.consts.block_size);
+          ctx.fillRect((j+0.25)*game.consts.block_size, (i+0.25)*game.consts.block_size, game.consts.block_size/2, game.consts.block_size/2);
         }
         // else{
         //   ctx.fill();
@@ -72,18 +74,28 @@ function draw(){
   requestAnimationFrame(draw);
 }
 
-var myImage = new Image();
-myImage.src = "http://i.imgur.com/nZ5dorL.png";
- 
+var fire = new Image();
+var land = new Image();
+land.src = "http://i.imgur.com/AVjTTkF.png";
+fire.src = "http://i.imgur.com/nZ5dorL.png";
+
 var shift = 0;
 var frameWidth = 60;
 var frameHeight = 60;
 var totalFrames = 5;
 var currentFrame = 0;
  
-function animate(xcoor, ycoor) {
+function animate(xcoor, ycoor, type) {
   ctx.clearRect(xcoor, ycoor, frameWidth, frameHeight);
   //draw each frame + place them in the middle
+  var myImage = null;
+  if(type==1){
+    myImage = land;
+  }
+  else if(type==2){
+    myImage = fire;
+  }
+  console.log(currentFrame,totalFrames,shift);
   ctx.drawImage(myImage, shift, 0, frameWidth, frameHeight,
                     xcoor, ycoor, frameWidth, frameHeight);
   shift += frameWidth + 1;
