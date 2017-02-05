@@ -3,7 +3,7 @@
     // your code goes here
 
 exports.consts = {
-	width: 600,
+	width: 1200,
     height: 600,
     friction: 0.8,
     gravity: 0.8,
@@ -25,18 +25,22 @@ exports.player = {
 exports.make_boxes = function(){
 	 // dimensions
 	var boxes = new Array(11);
-	for (var i = 0; i < boxes.length; i++) {
-	  boxes[i] = new Array(11).fill(0);
+	for (var i = 0; i < boxes.length-1; i++) {
+	  boxes[i] = new Array(21).fill(0);
 	}
-	boxes[5][3] = 1;
-	boxes[6][7] = 1;
-	boxes[9][4] = 1;
-	boxes[9][5] = 1;
-	boxes[10][4] = 1;
-	boxes[10][5] = 1;
+	boxes[boxes.length-1] = new Array(21).fill(1);
 	console.log(boxes);
 	return boxes;
 };
+
+ exports.click_boxes = function(boxes, clickx, clicky) {
+    boxes[clicky][clickx] = (1 + boxes[clicky][clickx]) % 3;
+    /* number of states
+     0 = nothing
+     1 = land
+     2 = lava
+    */
+}
 
 exports.update = function(player, boxes, keys){
     // check keys

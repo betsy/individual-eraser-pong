@@ -20,6 +20,13 @@ app.get('/', function (req, res) {
     });
 })
 
+app.get('/player', function (req, res) {
+    fs.readFile('./player.html', 'utf-8', function(error, content) {
+        res.writeHead(200, {"Content-Type": "text/html"});
+        res.end(content);
+    });
+})
+
 var width = game.consts.width,
     height = game.consts.height,
     player = game.player,
@@ -49,7 +56,7 @@ io.sockets.on('connection', function (socket, username) {
     }); 
 
     socket.on('clicked', function(clickx,clicky){
-        boxes[clicky][clickx] = 1-boxes[clicky][clickx];
+        game.click_boxes(boxes, clickx, clicky)
     });
 
     setInterval(function(){
