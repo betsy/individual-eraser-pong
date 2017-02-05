@@ -26,11 +26,14 @@ socket.on('sync', function (p1, server_boxes) {
 
 var chick = new Image();
 chick.src = "chick.png";
+var bg = new Image();
+bg.src = "http://images.all-free-download.com/images/graphiclarge/simple_cartoon_cloud_and_star_background_6815607.jpg";
 
 function draw(){
   game.update(player, boxes, keys)
 
   ctx.clearRect(0,0,width,height);
+  ctx.drawImage(bg,0,0, width, height);
   ctx.drawImage(chick, 0, 0, 50, 50,
                     player.x, player.y, 50, 50);
 
