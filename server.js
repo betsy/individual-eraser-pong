@@ -11,7 +11,7 @@ var server = http.createServer(function(req, res) {
 
 var width = 600,
     height = 600,
-    p1 = {
+    player = {
       x : width/2,
       y : height/2,
       width : 50,
@@ -19,7 +19,8 @@ var width = 600,
       speed: 13,
       velX: 0,
       velY: 0,
-      jumping: false
+      jumping: false,
+      grounded: false
     },
     keys = [],
     friction = 0.8,
@@ -45,7 +46,7 @@ io.sockets.on('connection', function (socket, username) {
         // The username of the person who clicked is retrieved from the session variables
         keys[message.keyCode] = message.val;
         // console.log(message);
-        console.log(p1.x+" "+p1.y);
+        console.log(player.x+" "+player.y);
         // update();
     }); 
     console.log("asdf");
@@ -53,52 +54,152 @@ io.sockets.on('connection', function (socket, username) {
 		update();
 	},20);
 	setInterval(function(){
-		socket.emit('p1',p1);
+		socket.emit('player',player);
 	},40);
 });
 
+var boxes = [];
 
-function update(){
-  // check keys
-  // console.log("oidsgj");
-  // return;
+// dimensions
+boxes.push({
+    x: 0,
+    y: 0,
+    width: 10,
+    height: height
+});
+boxes.push({
+    x: 0,
+    y: height - 2,
+    width: width,
+    height: 50
+});
+boxes.push({
+    x: width - 10,
+    y: 0,
+    width: 50,
+    height: height
+});
+
+boxes.push({
+    x: 120,
+    y: 10,
+    width: 80,
+    height: 80
+});
+boxes.push({
+    x: 170,
+    y: 50,
+    width: 80,
+    height: 80
+});
+boxes.push({
+    x: 220,
+    y: 100,
+    width: 80,
+    height: 80
+});
+boxes.push({
+    x: 270,
+    y: 150,
+    width: 40,
+    height: 40
+});
+
+function update() {
+    // check keys
     if (keys[38] || keys[32]) {
         // up arrow or space
-      if(!p1.jumping){
-       p1.jumping = true;
-       p1.velY = -p1.speed*2;
-      }
+        if (!player.jumping && player.grounded) {
+            player.jumping = true;
+            player.grounded = false;
+            player.velY = -player.speed * 2;
+        }
     }
     if (keys[39]) {
         // right arrow
-        if (p1.velX < p1.speed) {             
-            p1.velX++;         
-         }     
-    }     
-    if (keys[37]) {         
-        // left arrow         
-        if (p1.velX > -p1.speed) {
-            p1.velX--;
+        if (player.velX < player.speed) {
+            player.velX++;
         }
     }
- 
-    p1.velX *= friction;
- 
-    p1.velY += gravity;
- 
-    p1.x += p1.velX;
-    p1.y += p1.velY;
- 
-    if (p1.x >= width-p1.width) {
-        p1.x = width-p1.width;
-    } else if (p1.x <= 0) {         
-        p1.x = 0;     
-    }    
-  
-    if(p1.y >= height-p1.height){
-        p1.y = height - p1.height;
-        p1.jumping = false;
+    if (keys[37]) {
+        // left arrow
+        if (player.velX > -player.speed) {
+            player.velX--;
+        }
     }
+
+    player.velX *= friction;
+    player.velY += gravity;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    
+    player.grounded = false;
+    for (var i = 0; i < boxes.length; i++) {
+        ctx.rect(boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height);
+        
+        var dir = colCheck(player, boxes[i]);
+
+        if (dir === "l" || dir === "r") {
+            player.velX = 0;
+            player.jumping = false;
+        } else if (dir === "b") {
+            player.grounded = true;
+            player.jumping = false;
+        } else if (dir === "t") {
+            player.velY *= -1;
+        }
+
+    }
+    
+    if(player.grounded){
+         player.velY = 0;
+    }
+    
+    player.x += player.velX;
+    player.y += player.velY;
+
+    ctx.fill();
+    ctx.fillStyle = "red";
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+
+    requestAnimationFrame(update);
+}
+
+function colCheck(shapeA, shapeB) {
+    // get the vectors to check against
+    var vX = (shapeA.x + (shapeA.width / 2)) - (shapeB.x + (shapeB.width / 2)),
+        vY = (shapeA.y + (shapeA.height / 2)) - (shapeB.y + (shapeB.height / 2)),
+        // add the half widths and half heights of the objects
+        hWidths = (shapeA.width / 2) + (shapeB.width / 2),
+        hHeights = (shapeA.height / 2) + (shapeB.height / 2),
+        colDir = null;
+
+    // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
+    if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
+        // figures out on which side we are colliding (top, bottom, left, or right)
+        var oX = hWidths - Math.abs(vX),
+            oY = hHeights - Math.abs(vY);
+        if (oX >= oY) {
+            if (vY > 0) {
+                colDir = "t";
+                shapeA.y += oY;
+            } else {
+                colDir = "b";
+                shapeA.y -= oY;
+            }
+        } else {
+            if (vX > 0) {
+                colDir = "l";
+                shapeA.x += oX;
+            } else {
+                colDir = "r";
+                shapeA.x -= oX;
+            }
+        }
+    }
+    return colDir;
 }
 
 server.listen(3000);
