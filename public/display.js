@@ -87,9 +87,9 @@ var fire = new Image();
 var land = new Image();
 var sleepy = new Image();
 
-land.src = "http://i.imgur.com/ygVDUBX.png";
-fire.src = "http://i.imgur.com/nZ5dorL.png";
-sleepy.src = "http://i.imgur.com/aWopdqe.png";
+land.src = "dirt.png";
+fire.src = "fire.png";
+sleepy.src = "sleepy.png";
 
 var shift = 0;
 var frameWidth = 60;
