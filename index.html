@@ -8,6 +8,13 @@
     <body>
         <canvas id="myCanvas"></canvas>
             <script src="/socket.io/socket.io.js"></script>
+            <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+            <script src="game.js"></script>
+            <script>
+                console.log(game.test());
+            </script>
+
             <script>
               var socket = io();
               // var canvas = document.getElementById('myCanvas');
@@ -53,7 +60,7 @@ var width = 600,
 
 socket.on('player', function (p1) {
   player = p1;
-  console.log(player.x,player.y);
+  // console.log(player.x,player.y);
 })
 
 function draw(player){
@@ -235,7 +242,6 @@ function colCheck(shapeA, shapeB) {
         <!-- <p><input type="button" value="Poke the server" id="poke" /></p> -->
 
 
-        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <!-- <script src="/socket.io/socket.io.js"></script> -->
         <script>
             /*var socket = io.connect('http://localhost:3000');

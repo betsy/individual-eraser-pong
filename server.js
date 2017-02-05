@@ -1,14 +1,25 @@
-var http = require('http');
-var fs = require('fs');
+// var http = require('http');
+const PORT = process.env.PORT || 3000;
 
+
+var fs = require('fs');
+var express = require('express')
+var app = express()
+var server = require('http').Server(app);
+var io = require('socket.io').listen(app.listen(PORT, function(){console.log("PORT ",PORT)}));
+app.use(express.static('public'))
+
+
+var mymodule = require('./public/game.js');
+console.log(mymodule.test());
 
 // Loading the file index.html displayed to the client
-var server = http.createServer(function(req, res) {
+app.get('/', function (req, res) {
     fs.readFile('./index.html', 'utf-8', function(error, content) {
         res.writeHead(200, {"Content-Type": "text/html"});
         res.end(content);
     });
-});
+})
 
 var width = 600,
     height = 600,
@@ -30,9 +41,8 @@ var width = 600,
 
 // Loading socket.io
 
-const PORT = process.env.PORT || 3000;
 
-var io = require('socket.io').listen(server);
+// var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket, username) {
     // When the client connects, they are sent a message
@@ -210,5 +220,3 @@ function colCheck(shapeA, shapeB) {
     }
     return colDir;
 }
-
-server.listen(PORT);
