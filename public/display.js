@@ -52,10 +52,10 @@ function draw(){
           animate(j*game.consts.block_size, i*game.consts.block_size, 2);
         }
         else if (boxes[i][j] == 3){
-          // animate(j*game.consts.block_size, i*game.consts.block_size, 3);
-          ctx.fill();
-          ctx.fillStyle = "green";
-          ctx.fillRect((j+0.25)*game.consts.block_size, (i+0.25)*game.consts.block_size, game.consts.block_size/2, game.consts.block_size/2);
+          animate(j*game.consts.block_size, i*game.consts.block_size, 3);
+          // ctx.fill();
+          // ctx.fillStyle = "green";
+          // ctx.fillRect((j+0.25)*game.consts.block_size, (i+0.25)*game.consts.block_size, game.consts.block_size/2, game.consts.block_size/2);
         }
         // else{
         //   ctx.fill();
@@ -76,8 +76,10 @@ function draw(){
 
 var fire = new Image();
 var land = new Image();
+var sleepy = new Image();
 land.src = "http://i.imgur.com/AVjTTkF.png";
 fire.src = "http://i.imgur.com/nZ5dorL.png";
+sleepy.src = "http://i.imgur.com/aWopdqe.png";
 
 var shift = 0;
 var frameWidth = 60;
@@ -94,6 +96,9 @@ function animate(xcoor, ycoor, type) {
   }
   else if(type==2){
     myImage = fire;
+  }
+  else if(type==3){
+    myImage = sleepy;
   }
   console.log(currentFrame,totalFrames,shift);
   ctx.drawImage(myImage, shift, 0, frameWidth, frameHeight,
