@@ -33,8 +33,9 @@ var width = game.consts.width,
     player = game.player,
     keys = [];
 
-socket.on('player', function (p1) {
+socket.on('sync', function (p1, server_boxes) {
   player = p1;
+  boxes = server_boxes;
   // console.log(player.x,player.y);
 })
 
@@ -51,7 +52,13 @@ function draw(){
   for (var i = 0; i < boxes.length; i++) {
     for (var j = 0; j < boxes[i].length; j++) {
         if (boxes[i][j] == 1){
-          ctx.rect(j*game.consts.block_size, i*game.consts.block_size, game.consts.block_size, game.consts.block_size);
+          ctx.fill();
+          ctx.fillStyle = "black";
+          ctx.fillRect(j*game.consts.block_size, i*game.consts.block_size, game.consts.block_size, game.consts.block_size);
+        }
+        else{
+          ctx.fill();
+          ctx.fillRect((j+0.25)*game.consts.block_size, (i+0.25)*game.consts.block_size, game.consts.block_size/2, game.consts.block_size/2);
         }
     }
   }
@@ -68,11 +75,12 @@ document.body.addEventListener("keyup", function(e) {
 });
 
 canvas.addEventListener("mousedown",function(e){
-     var mousePos = getMousePos(canvas, e);
-     socket.emit('clicked', {
-        x: (mousePos.x - (mousePos.x%game.consts.block_size))/game.consts.block_size,
-        y: (mousePos.y - (mousePos.y%game.consts.block_size))/game.consts.block_size
-     });
+    var mousePos = getMousePos(canvas, e);
+    var clickx = (mousePos.x - (mousePos.x%game.consts.block_size))/game.consts.block_size;
+    var clicky = (mousePos.y - (mousePos.y%game.consts.block_size))/game.consts.block_size;
+    boxes[clicky][clickx] = 1 - boxes[clicky][clickx];
+    console.log("asdfdsaf ",boxes[clicky][clickx]);
+    socket.emit('clicked', clickx, clicky);
 });
  
 window.addEventListener("load",function(){
@@ -80,12 +88,13 @@ window.addEventListener("load",function(){
 });
 
 function getMousePos(canvas, evt) {
-        var rect = canvas.getBoundingClientRect();
-        return {
-          x: evt.clientX - rect.left,
-          y: evt.clientY - rect.top
-        };
-      }
+  var rect = canvas.getBoundingClientRect();
+  return {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top
+  };
+
+}
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';

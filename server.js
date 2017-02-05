@@ -46,21 +46,17 @@ io.sockets.on('connection', function (socket, username) {
         // The username of the person who clicked is retrieved from the session variables
         keys[message.keyCode] = message.val;
         // console.log(message);
-        console.log(player.x+" "+player.y);
     }); 
 
-    socket.on('clicked', function(message){
-        console.log("clicked!");
-        console.log(message.x);
-        console.log(message.y);
+    socket.on('clicked', function(clickx,clicky){
+        boxes[clicky][clickx] = 1-boxes[clicky][clickx];
     });
 
-    console.log("asdf");
     setInterval(function(){
         game.update(player, boxes, keys);
     },20);
     setInterval(function(){
-        socket.emit('player',player);
+        socket.emit('sync',player,boxes);
     },40);
 });
 

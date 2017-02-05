@@ -26,7 +26,7 @@ exports.make_boxes = function(){
 	 // dimensions
 	var boxes = new Array(11);
 	for (var i = 0; i < boxes.length; i++) {
-	  boxes[i] = new Array(11);
+	  boxes[i] = new Array(11).fill(0);
 	}
 	boxes[5][3] = 1;
 	boxes[6][7] = 1;
@@ -35,51 +35,6 @@ exports.make_boxes = function(){
 	boxes[10][4] = 1;
 	boxes[10][5] = 1;
 	console.log(boxes);
-	/*
-	boxes.push({
-	    x: 300,
-	    y: 300,
-	    width: 10,
-	    height: 600
-	});
-	boxes.push({
-	    x: 0,
-	    y: 600 - 2,
-	    width: 600,
-	    height: 50
-	});
-	boxes.push({
-	    x: 600 - 10,
-	    y: 0,
-	    width: 50,
-	    height: 600
-	});
-
-	boxes.push({
-	    x: 420,
-	    y: 450,
-	    width: 80,
-	    height: 80
-	});
-	boxes.push({
-	    x: 170,
-	    y: 50,
-	    width: 80,
-	    height: 80
-	});
-	boxes.push({
-	    x: 220,
-	    y: 100,
-	    width: 80,
-	    height: 80
-	});
-	boxes.push({
-	    x: 270,
-	    y: 150,
-	    width: 40,
-	    height: 40
-	});
-	*/
 	return boxes;
 };
 
@@ -156,7 +111,6 @@ function colCheck(player, bx, by) {
                 player.y += oY;
             } else {
                 colDir = "b";
-        		console.log(vX, hWidths, vY, hHeights);
                 player.y -= oY;
             }
         } else {
