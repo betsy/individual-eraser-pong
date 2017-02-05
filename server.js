@@ -16,14 +16,14 @@ var width = 600,
       y : height/2,
       width : 50,
       height : 50,
-      speed: 3,
+      speed: 13,
       velX: 0,
       velY: 0,
       jumping: false
     },
     keys = [],
     friction = 0.8,
-    gravity = 0.2;
+    gravity = 2.0;
 
 
 // Loading socket.io
@@ -46,53 +46,59 @@ io.sockets.on('connection', function (socket, username) {
         keys[message.keyCode] = message.val;
         // console.log(message);
         console.log(p1.x+" "+p1.y);
-        socket.emit('p1',p1);
+        // update();
     }); 
     console.log("asdf");
-    update();
+    setInterval(function(){
+		update();
+	},20);
+	setInterval(function(){
+		socket.emit('p1',p1);
+	},40);
 });
 
 
 function update(){
   // check keys
+  // console.log("oidsgj");
+  // return;
+    if (keys[38] || keys[32]) {
+        // up arrow or space
+      if(!p1.jumping){
+       p1.jumping = true;
+       p1.velY = -p1.speed*2;
+      }
+    }
+    if (keys[39]) {
+        // right arrow
+        if (p1.velX < p1.speed) {             
+            p1.velX++;         
+         }     
+    }     
+    if (keys[37]) {         
+        // left arrow         
+        if (p1.velX > -p1.speed) {
+            p1.velX--;
+        }
+    }
+ 
+    p1.velX *= friction;
+ 
+    p1.velY += gravity;
+ 
+    p1.x += p1.velX;
+    p1.y += p1.velY;
+ 
+    if (p1.x >= width-p1.width) {
+        p1.x = width-p1.width;
+    } else if (p1.x <= 0) {         
+        p1.x = 0;     
+    }    
   
-    // if (keys[38] || keys[32]) {
-    //     // up arrow or space
-    //   if(!p1.jumping){
-    //    p1.jumping = true;
-    //    p1.velY = -p1.speed*2;
-    //   }
-    // }
-    // if (keys[39]) {
-    //     // right arrow
-    //     if (p1.velX < p1.speed) {             
-    //         p1.velX++;         
-    //      }     
-    // }     
-    // if (keys[37]) {         
-    //     // left arrow         
-    //     if (p1.velX > -p1.speed) {
-    //         p1.velX--;
-    //     }
-    // }
- 
-    // p1.velX *= friction;
- 
-    // p1.velY += gravity;
- 
-    // p1.x += p1.velX;
-    // p1.y += p1.velY;
- 
-    // if (p1.x >= width-p1.width) {
-    //     p1.x = width-p1.width;
-    // } else if (p1.x <= 0) {         
-    //     p1.x = 0;     
-    // }    
-  
-    // if(p1.y >= height-p1.height){
-    //     p1.y = height - p1.height;
-    //     p1.jumping = false;
-    // }
+    if(p1.y >= height-p1.height){
+        p1.y = height - p1.height;
+        p1.jumping = false;
+    }
 }
 
 server.listen(3000);

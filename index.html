@@ -34,26 +34,35 @@ canvas.width = width;
 canvas.height = height;
 
 
-p1pos = {
-  x : width/2,
-  y : height/2,
-  width : 50,
-  height : 50
-}
+var width = 600,
+    height = 600,
+    p1 = {
+      x : width/2,
+      y : height/2,
+      width : 50,
+      height : 50,
+      speed: 10,
+      velX: 0,
+      velY: 0,
+      jumping: false
+    },
+    keys = [],
+    friction = 0.8,
+    gravity = 1.8;
 
-socket.on('p1', function (p1) { 
-  p1pos.x = p1.x;
-  p1pos.y = p1.y;
-  update(p1pos)
+socket.on('p1', function (player) {
+  p1 = player;
+  console.log(p1.x,p1.y);
 })
 
-function update(player){
+function draw(player){
+  update()
   ctx.clearRect(0,0,width,height);
   ctx.fillStyle = "red";
-  ctx.fillRect(p1pos.x,p1pos.y, p1pos.width, p1pos.height);
+  ctx.fillRect(p1.x,p1.y, p1.width, p1.height);
   // ctx.fillRect(300,595,500.1,500.1);
-  // console.log(p1pos.x,p1pos.y, player.width, player.height);
-  requestAnimationFrame(update);
+  // console.log(p1.x,p1.y, player.width, player.height);
+  requestAnimationFrame(draw);
 }
 
 document.body.addEventListener("keydown", function(e) {
@@ -67,8 +76,48 @@ document.body.addEventListener("keyup", function(e) {
 });
  
 window.addEventListener("load",function(){
-    update();
+    draw();
 });
+
+function update(){
+    if (keys[38] || keys[32]) {
+        // up arrow or space
+      if(!p1.jumping){
+       p1.jumping = true;
+       p1.velY = -p1.speed*2;
+      }
+    }
+    if (keys[39]) {
+        // right arrow
+        if (p1.velX < p1.speed) {             
+            p1.velX++;         
+         }     
+    }     
+    if (keys[37]) {         
+        // left arrow         
+        if (p1.velX > -p1.speed) {
+            p1.velX--;
+        }
+    }
+ 
+    p1.velX *= friction;
+ 
+    p1.velY += gravity;
+ 
+    p1.x += p1.velX;
+    p1.y += p1.velY;
+ 
+    if (p1.x >= width-p1.width) {
+        p1.x = width-p1.width;
+    } else if (p1.x <= 0) {         
+        p1.x = 0;     
+    }    
+  
+    if(p1.y >= height-p1.height){
+        p1.y = height - p1.height;
+        p1.jumping = false;
+    }
+}
             </script>
 
         </body>
