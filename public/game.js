@@ -6,7 +6,7 @@ exports.consts = {
 	width: 600,
     height: 600,
     friction: 0.8,
-    gravity: 1,
+    gravity: 0.8,
     block_size: 60
 };
 
@@ -24,14 +24,18 @@ exports.player = {
 
 exports.make_boxes = function(){
 	 // dimensions
-	var boxes = new Array(10);
-	for (var i = 0; i < 20; i++) {
-	  boxes[i] = new Array(10);
+	var boxes = new Array(11);
+	for (var i = 0; i < boxes.length; i++) {
+	  boxes[i] = new Array(11);
 	}
 	boxes[5][3] = 1;
-
-
-	
+	boxes[6][7] = 1;
+	boxes[9][4] = 1;
+	boxes[9][5] = 1;
+	boxes[10][4] = 1;
+	boxes[10][5] = 1;
+	console.log(boxes);
+	/*
 	boxes.push({
 	    x: 300,
 	    y: 300,
@@ -75,6 +79,7 @@ exports.make_boxes = function(){
 	    width: 40,
 	    height: 40
 	});
+	*/
 	return boxes;
 };
 
@@ -106,19 +111,20 @@ exports.update = function(player, boxes, keys){
     
     player.grounded = false;
     for (var i = 0; i < boxes.length; i++) {
-        
-        var dir = colCheck(player, boxes[i]);
+    	for (var j = 0; j < boxes[i].length; j++) {
+        	if (boxes[i][j] == 0 || boxes[i][j] == null) continue;
+	        var dir = colCheck(player, j*exports.consts.block_size, i*exports.consts.block_size);
 
-        if (dir === "l" || dir === "r") {
-            player.velX = 0;
-            player.jumping = false;
-        } else if (dir === "b") {
-            player.grounded = true;
-            player.jumping = false;
-        } else if (dir === "t") {
-            player.velY *= -1;
-        }
-
+	        if (dir === "l" || dir === "r") {
+	            player.velX = 0;
+	            player.jumping = false;
+	        } else if (dir === "b") {
+	            player.grounded = true;
+	            player.jumping = false;
+	        } else if (dir === "t") {
+	            player.velY *= -1;
+	        }
+    	}
     }
     
     if(player.grounded){
@@ -128,16 +134,15 @@ exports.update = function(player, boxes, keys){
     player.x += player.velX;
     player.y += player.velY;
 };
-/*
-function colCheck(ax, ay, bx, by) {
+
+function colCheck(player, bx, by) {
     // get the vectors to check against
-    var blockwidth = exports.consts.block_size;
-    var blockheight = exports.consts.block_size;
-    var vX = (ax + (blockwidth / 2)) - (bx + (blockwidth / 2)),
-        vY = (ay + (blockheight / 2)) - (by + (blockheight / 2)),
+    var blocksize = exports.consts.block_size;
+    var vX = (player.x + (exports.player.width / 2)) - (bx + (blocksize / 2)),
+        vY = (player.y + (exports.player.height / 2)) - (by + (blocksize / 2)),
         // add the half widths and half heights of the objects
-        hWidths = (shapeA.width / 2) + (shapeB.width / 2),
-        hHeights = (shapeA.height / 2) + (shapeB.height / 2),
+        hWidths = (player.width / 2) + (blocksize / 2),
+        hHeights = (player.height / 2) + (blocksize / 2),
         colDir = null;
 
     // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
@@ -148,25 +153,27 @@ function colCheck(ax, ay, bx, by) {
         if (oX >= oY) {
             if (vY > 0) {
                 colDir = "t";
-                shapeA.y += oY;
+                player.y += oY;
             } else {
                 colDir = "b";
-                shapeA.y -= oY;
+        		console.log(vX, hWidths, vY, hHeights);
+                player.y -= oY;
             }
         } else {
             if (vX > 0) {
                 colDir = "l";
-                shapeA.x += oX;
+                player.x += oX;
             } else {
                 colDir = "r";
-                shapeA.x -= oX;
+                player.x -= oX;
             }
         }
     }
+    // console.log(colDir);
     return colDir;
 }
-*/
 
+/*
 function colCheck(shapeA, shapeB) {
     // get the vectors to check against
     var vX = (shapeA.x + (shapeA.width / 2)) - (shapeB.x + (shapeB.width / 2)),
@@ -200,6 +207,6 @@ function colCheck(shapeA, shapeB) {
         }
     }
     return colDir;
-}
+}*/
 
 })(typeof exports === 'undefined'? this['game']={}: exports);
