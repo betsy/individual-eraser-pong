@@ -31,12 +31,12 @@ function draw(){
   game.update(player, boxes, keys)
 
   ctx.clearRect(0,0,width,height);
-  // ctx.fill();
-  // ctx.fillStyle = "red";
   ctx.drawImage(chick, 0, 0, 50, 50,
                     player.x, player.y, 50, 50);
 
   if(player.health<0 || player.y > 99999){
+    ctx.fill();
+    ctx.fillStyle = "red";
     ctx.fillRect(0, 0, width, height);
     return;
   }

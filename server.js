@@ -61,9 +61,9 @@ io.sockets.on('connection', function (socket, username) {
 
     setInterval(function(){
         game.update(player, boxes, keys);
-    },20);
+    },30);
     setInterval(function(){
         socket.emit('sync',player,boxes);
-    },40);
+    },50);
 });
 
