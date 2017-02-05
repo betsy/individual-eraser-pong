@@ -6,7 +6,8 @@ exports.consts = {
 	width: 600,
     height: 600,
     friction: 0.8,
-    gravity: 1
+    gravity: 1,
+    block_size: 60
 };
 
 exports.player = {
@@ -23,7 +24,14 @@ exports.player = {
 
 exports.make_boxes = function(){
 	 // dimensions
-	var boxes = [];
+	var boxes = new Array(10);
+	for (var i = 0; i < 20; i++) {
+	  boxes[i] = new Array(10);
+	}
+	boxes[5][3] = 1;
+
+
+	
 	boxes.push({
 	    x: 300,
 	    y: 300,
@@ -120,6 +128,44 @@ exports.update = function(player, boxes, keys){
     player.x += player.velX;
     player.y += player.velY;
 };
+/*
+function colCheck(ax, ay, bx, by) {
+    // get the vectors to check against
+    var blockwidth = exports.consts.block_size;
+    var blockheight = exports.consts.block_size;
+    var vX = (ax + (blockwidth / 2)) - (bx + (blockwidth / 2)),
+        vY = (ay + (blockheight / 2)) - (by + (blockheight / 2)),
+        // add the half widths and half heights of the objects
+        hWidths = (shapeA.width / 2) + (shapeB.width / 2),
+        hHeights = (shapeA.height / 2) + (shapeB.height / 2),
+        colDir = null;
+
+    // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
+    if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
+        // figures out on which side we are colliding (top, bottom, left, or right)
+        var oX = hWidths - Math.abs(vX),
+            oY = hHeights - Math.abs(vY);
+        if (oX >= oY) {
+            if (vY > 0) {
+                colDir = "t";
+                shapeA.y += oY;
+            } else {
+                colDir = "b";
+                shapeA.y -= oY;
+            }
+        } else {
+            if (vX > 0) {
+                colDir = "l";
+                shapeA.x += oX;
+            } else {
+                colDir = "r";
+                shapeA.x -= oX;
+            }
+        }
+    }
+    return colDir;
+}
+*/
 
 function colCheck(shapeA, shapeB) {
     // get the vectors to check against

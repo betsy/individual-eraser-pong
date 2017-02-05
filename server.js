@@ -48,6 +48,13 @@ io.sockets.on('connection', function (socket, username) {
         // console.log(message);
         console.log(player.x+" "+player.y);
     }); 
+
+    socket.on('clicked', function(message){
+        console.log("clicked!");
+        console.log(message.x);
+        console.log(message.y);
+    });
+
     console.log("asdf");
     setInterval(function(){
         game.update(player, boxes, keys);

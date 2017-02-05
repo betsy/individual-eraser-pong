@@ -59,10 +59,34 @@ document.body.addEventListener("keydown", function(e) {
 document.body.addEventListener("keyup", function(e) {
     socket.emit ('player move', {keyCode: e.keyCode, val: false});
 });
+
+canvas.addEventListener("mousedown",function(e){
+     var mousePos = getMousePos(canvas, e);
+     socket.emit('clicked', {
+        x: (mousePos.x - (mousePos.x%game.consts.block_size))/game.consts.block_size,
+        y: (mousePos.y - (mousePos.y%game.consts.block_size))/game.consts.block_size
+     });
+});
  
 window.addEventListener("load",function(){
     draw();
 });
+
+function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+          color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
             </script>
         </body>
