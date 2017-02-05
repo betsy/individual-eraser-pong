@@ -16,7 +16,7 @@ var width = 600,
       y : height/2,
       width : 50,
       height : 50,
-      speed: 13,
+      speed: 8,
       velX: 0,
       velY: 0,
       jumping: false,
@@ -24,7 +24,7 @@ var width = 600,
     },
     keys = [],
     friction = 0.8,
-    gravity = 2.0;
+    gravity = 1.3;
 
 
 // Loading socket.io
@@ -62,8 +62,8 @@ var boxes = [];
 
 // dimensions
 boxes.push({
-    x: 0,
-    y: 0,
+    x: 300,
+    y: 300,
     width: 10,
     height: height
 });
@@ -81,8 +81,8 @@ boxes.push({
 });
 
 boxes.push({
-    x: 120,
-    y: 10,
+    x: 420,
+    y: 450,
     width: 80,
     height: 80
 });
@@ -131,13 +131,13 @@ function update() {
     player.velX *= friction;
     player.velY += gravity;
 
-    ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "black";
-    ctx.beginPath();
+    // ctx.clearRect(0, 0, width, height);
+    // ctx.fillStyle = "black";
+    // ctx.beginPath();
     
     player.grounded = false;
     for (var i = 0; i < boxes.length; i++) {
-        ctx.rect(boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height);
+        // ctx.rect(boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height);
         
         var dir = colCheck(player, boxes[i]);
 
@@ -160,11 +160,11 @@ function update() {
     player.x += player.velX;
     player.y += player.velY;
 
-    ctx.fill();
-    ctx.fillStyle = "red";
-    ctx.fillRect(player.x, player.y, player.width, player.height);
+    // ctx.fill();
+    // ctx.fillStyle = "red";
+    // ctx.fillRect(player.x, player.y, player.width, player.height);
 
-    requestAnimationFrame(update);
+    // requestAnimationFrame(update);
 }
 
 function colCheck(shapeA, shapeB) {

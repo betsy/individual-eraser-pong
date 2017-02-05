@@ -36,7 +36,7 @@ canvas.height = height;
 
 var width = 600,
     height = 600,
-    p1 = {
+    player = {
       x : width/2,
       y : height/2,
       width : 50,
@@ -44,24 +44,25 @@ var width = 600,
       speed: 10,
       velX: 0,
       velY: 0,
-      jumping: false
+      jumping: false,
+      grounded: false
     },
     keys = [],
     friction = 0.8,
-    gravity = 1.8;
+    gravity = 1.5;
 
-socket.on('p1', function (player) {
-  p1 = player;
-  console.log(p1.x,p1.y);
+socket.on('player', function (p1) {
+  player = p1;
+  console.log(player.x,player.y);
 })
 
 function draw(player){
   update()
   ctx.clearRect(0,0,width,height);
   ctx.fillStyle = "red";
-  ctx.fillRect(p1.x,p1.y, p1.width, p1.height);
+  ctx.fillRect(player.x,player.y, player.width, player.height);
   // ctx.fillRect(300,595,500.1,500.1);
-  // console.log(p1.x,p1.y, player.width, player.height);
+  // console.log(player.x,player.y, player.width, player.height);
   requestAnimationFrame(draw);
 }
 
@@ -83,8 +84,8 @@ var boxes = [];
 
 // dimensions
 boxes.push({
-    x: 0,
-    y: 0,
+    x: 300,
+    y: 300,
     width: 10,
     height: height
 });
@@ -102,8 +103,8 @@ boxes.push({
 });
 
 boxes.push({
-    x: 120,
-    y: 10,
+    x: 420,
+    y: 450,
     width: 80,
     height: 80
 });
