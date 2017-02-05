@@ -1,6 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 
+
 // Loading the file index.html displayed to the client
 var server = http.createServer(function(req, res) {
     fs.readFile('./index.html', 'utf-8', function(error, content) {
@@ -58,26 +59,27 @@ io.sockets.on('connection', function (socket, username) {
 	},40);
 });
 
-var boxes = [];
 
+function make_boxes() {
 // dimensions
+var boxes = [];
 boxes.push({
     x: 300,
     y: 300,
     width: 10,
-    height: height
+    height: 600
 });
 boxes.push({
     x: 0,
-    y: height - 2,
-    width: width,
+    y: 600 - 2,
+    width: 600,
     height: 50
 });
 boxes.push({
-    x: width - 10,
+    x: 600 - 10,
     y: 0,
     width: 50,
-    height: height
+    height: 600
 });
 
 boxes.push({
@@ -104,6 +106,10 @@ boxes.push({
     width: 40,
     height: 40
 });
+return boxes;
+}
+
+var boxes = make_boxes();
 
 function update() {
     // check keys
