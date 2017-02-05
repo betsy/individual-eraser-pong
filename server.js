@@ -29,6 +29,9 @@ var width = 600,
 
 
 // Loading socket.io
+
+const PORT = process.env.PORT || 3000;
+
 var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket, username) {
@@ -208,4 +211,4 @@ function colCheck(shapeA, shapeB) {
     return colDir;
 }
 
-server.listen(3000);
+server.listen(PORT);
