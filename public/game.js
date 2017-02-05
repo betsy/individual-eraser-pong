@@ -35,11 +35,12 @@ exports.make_boxes = function(){
 };
 
  exports.click_boxes = function(boxes, clickx, clicky) {
-    boxes[clicky][clickx] = (1 + boxes[clicky][clickx]) % 3;
+    boxes[clicky][clickx] = (1 + boxes[clicky][clickx]) % 4;
     /* number of states
      0 = nothing
      1 = land
-     2 = lava
+     2 = fire
+     3 = sleepy (replenish)
     */
 }
 
@@ -75,7 +76,6 @@ exports.update = function(player, boxes, keys){
         	if (boxes[i][j] == 0 || boxes[i][j] == null) continue;
 	        var dir = colCheck(player, j*exports.consts.block_size, i*exports.consts.block_size);
 
-	        if(boxes[i][j] == 2) player.health--;
 	        if (dir === "l" || dir === "r") {
 	            player.velX = 0;
 	            player.jumping = false;
@@ -85,8 +85,14 @@ exports.update = function(player, boxes, keys){
 	        } else if (dir === "t") {
 	            player.velY *= -1;
 	        }
-	        else if (boxes[i][j] == 2){
-	        	player.health++;
+
+	        if (dir != null){
+	        	if (boxes[i][j] == 2){
+		        	player.health--;
+		        }
+		        if (boxes[i][j] == 3){
+		        	player.health++;
+		        }
 	        }
     	}
     }

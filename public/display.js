@@ -42,12 +42,17 @@ function draw(){
 
   for (var i = 0; i < boxes.length; i++) {
     for (var j = 0; j < boxes[i].length; j++) {
-        if (boxes[i][j] == 2){
-          animate(j*game.consts.block_size, i*game.consts.block_size);
-        }
-        else if(boxes[i][j] == 1){
+        if(boxes[i][j] == 1){
           ctx.fill();
           ctx.fillStyle = "black";
+          ctx.fillRect(j*game.consts.block_size, i*game.consts.block_size, game.consts.block_size, game.consts.block_size);
+        }
+        else if (boxes[i][j] == 2){
+          animate(j*game.consts.block_size, i*game.consts.block_size);
+        }
+        else if (boxes[i][j] == 3){
+          ctx.fill();
+          ctx.fillStyle = "green";
           ctx.fillRect(j*game.consts.block_size, i*game.consts.block_size, game.consts.block_size, game.consts.block_size);
         }
         // else{
