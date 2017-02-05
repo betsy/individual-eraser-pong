@@ -23,19 +23,25 @@ socket.on('sync', function (p1, server_boxes) {
   // console.log(player.x,player.y);
 })
 
+
+var chick = new Image();
+chick.src = "chick.png";
+
 function draw(){
   game.update(player, boxes, keys)
 
   ctx.clearRect(0,0,width,height);
-  ctx.fill();
-  ctx.fillStyle = "red";
+  // ctx.fill();
+  // ctx.fillStyle = "red";
+  ctx.drawImage(chick, 0, 0, 50, 50,
+                    player.x, player.y, 50, 50);
 
   if(player.health<0 || player.y > 99999){
     ctx.fillRect(0, 0, width, height);
     return;
   }
 
-  ctx.fillRect(player.x, player.y, player.width, player.height);
+  // ctx.fillRect(player.x, player.y, player.width, player.height);
 
   // ctx.fillStyle = "black";
   
@@ -65,10 +71,10 @@ function draw(){
     }
     ctx.fill();
     ctx.fillStyle = "red";
-    ctx.fillRect(0,10.5*60,width,30);
+    ctx.fillRect(0,10.75*60,width,15);
     ctx.fill();
     ctx.fillStyle = "green";
-    ctx.fillRect(0,10.5*60,width*player.health/200,30);
+    ctx.fillRect(0,10.75*60,width*player.health/200,15);
   }
 
   requestAnimationFrame(draw);
@@ -77,7 +83,8 @@ function draw(){
 var fire = new Image();
 var land = new Image();
 var sleepy = new Image();
-land.src = "http://i.imgur.com/AVjTTkF.png";
+
+land.src = "http://i.imgur.com/ygVDUBX.png";
 fire.src = "http://i.imgur.com/nZ5dorL.png";
 sleepy.src = "http://i.imgur.com/aWopdqe.png";
 
@@ -100,6 +107,9 @@ function animate(xcoor, ycoor, type) {
   else if(type==3){
     myImage = sleepy;
   }
+  // else if(type==-1){
+  //   myImage = chick;
+  // }
   console.log(currentFrame,totalFrames,shift);
   ctx.drawImage(myImage, shift, 0, frameWidth, frameHeight,
                     xcoor, ycoor, frameWidth, frameHeight);
