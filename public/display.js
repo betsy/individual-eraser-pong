@@ -41,6 +41,11 @@ function draw(){
     ctx.fill();
     ctx.fillStyle = "red";
     ctx.fillRect(0, 0, width, height);
+    ctx.font = "30px Comic Sans MS";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "white";
+    ctx.fillText("you killed the chick :(",width/2,height/4);
+    ctx.fillText("rehatching in a sec...",width/2,height/3);
   }
 
   // ctx.fillRect(player.x, player.y, player.width, player.height);
