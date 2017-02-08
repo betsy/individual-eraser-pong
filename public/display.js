@@ -11,7 +11,7 @@ var canvas = document.getElementById("myCanvas"),
 
 var width = game.consts.width,
     height = game.consts.height,
-    player = game.player,
+    player = game.make_player(),
     keys = [];
 
 canvas.width = width;
@@ -37,18 +37,17 @@ function draw(){
   ctx.drawImage(chick, 0, 0, 50, 50,
                     player.x, player.y, 50, 50);
 
-  if(player.health<0 || player.y > 99999){
+  if(player.health<0 || player.y > height*2){
     ctx.fill();
     ctx.fillStyle = "red";
     ctx.fillRect(0, 0, width, height);
-    return;
   }
 
   // ctx.fillRect(player.x, player.y, player.width, player.height);
 
   // ctx.fillStyle = "black";
   
-
+  else{
   for (var i = 0; i < boxes.length; i++) {
     for (var j = 0; j < boxes[i].length; j++) {
         if(boxes[i][j] == 1){
@@ -79,7 +78,7 @@ function draw(){
     ctx.fillStyle = "green";
     ctx.fillRect(0,10.75*60,width*player.health/200,15);
   }
-
+}
   requestAnimationFrame(draw);
 }
 
@@ -98,6 +97,7 @@ var totalFrames = 5;
 var currentFrame = 0;
  
 function animate(xcoor, ycoor, type) {
+  if(type == undefined) return;
   ctx.clearRect(xcoor, ycoor, frameWidth, frameHeight);
   //draw each frame + place them in the middle
   var myImage = null;
@@ -113,7 +113,8 @@ function animate(xcoor, ycoor, type) {
   // else if(type==-1){
   //   myImage = chick;
   // }
-  console.log(currentFrame,totalFrames,shift);
+  // console.log(currentFrame,totalFrames,shift);
+  // console.log(type);
   ctx.drawImage(myImage, shift, 0, frameWidth, frameHeight,
                     xcoor, ycoor, frameWidth, frameHeight);
   shift += frameWidth + 1;

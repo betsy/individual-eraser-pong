@@ -10,7 +10,7 @@ exports.consts = {
     block_size: 60
 };
 
-exports.player = {
+src_player = {
   x : exports.consts.width/2,
   y : exports.consts.height/2,
   width : 50,
@@ -22,6 +22,23 @@ exports.player = {
   grounded: false,
   health: 200
 };
+
+exports.make_player = function() {
+	// var player = {
+	//   x : exports.consts.width/2,
+	//   y : exports.consts.height/2,
+	//   width : 50,
+	//   height : 50,
+	//   speed: 8,
+	//   velX: 0,
+	//   velY: 0,
+	//   jumping: false,
+	//   grounded: false,
+	//   health: 200
+	// };
+	var new_player = Object.assign({}, src_player);
+	return new_player;
+}
 
 exports.make_boxes = function(){
 	 // dimensions
@@ -108,8 +125,8 @@ exports.update = function(player, boxes, keys){
 function colCheck(player, bx, by) {
     // get the vectors to check against
     var blocksize = exports.consts.block_size;
-    var vX = (player.x + (exports.player.width / 2)) - (bx + (blocksize / 2)),
-        vY = (player.y + (exports.player.height / 2)) - (by + (blocksize / 2)),
+    var vX = (player.x + (src_player.width / 2)) - (bx + (blocksize / 2)),
+        vY = (player.y + (src_player.height / 2)) - (by + (blocksize / 2)),
         // add the half widths and half heights of the objects
         hWidths = (player.width / 2) + (blocksize / 2),
         hHeights = (player.height / 2) + (blocksize / 2),

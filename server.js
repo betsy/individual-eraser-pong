@@ -29,7 +29,7 @@ app.get('/player', function (req, res) {
 
 var width = game.consts.width,
     height = game.consts.height,
-    player = game.player,
+    player = game.make_player(),
     keys = [];
 
 
@@ -61,6 +61,13 @@ io.sockets.on('connection', function (socket, username) {
 
     setInterval(function(){
         game.update(player, boxes, keys);
+        if(player.health<0 || player.y > height*2){ /*if chick died, reset after brief delay*/
+            setTimeout(function(){
+                player = game.make_player();
+                boxes = game.make_boxes();
+                socket.emit('sync',player,boxes);
+            }, 2000);
+        }
     },30);
     setInterval(function(){
         socket.emit('sync',player,boxes);
