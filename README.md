@@ -1,3 +1,2 @@
 # individual-eraser-pong
-hack@brown
-by betsy and rachelzhang98
+hack@brown2016  by betsy and rachelzhang98
